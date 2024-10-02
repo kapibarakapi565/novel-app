@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content ="width = device-width, initial-scale = 1.0">
+    <title>小説執筆アプリ</title>
+    <link rel = "stylesheet" href ="style.css">
+  </head>
+  <body>
+    <!-- 小説一覧 -->
+     <section id = "novel_index" class = "container">
+      <h1>小説一覧</h1>
+      <ul>
+        <li><a href ="#chapter_index">小説1</a></li>
+        <li><a href ="#chapter_index">小説2</a></li>
+        <li><a href ="#chapter_index">小説3</a></li>
+      </ul>
+     </section>
+
+     <!-- 章パート一覧 -->
+    <section id="chapter_index" class="container" style="display:none;">
+      <h1>章パート一覧</h1>
+      <ul>
+          <li><a href="#content">第1章</a></li>
+          <li><a href="#content">第2章</a></li>
+          <li><a href="#content">第3章</a></li>
+      </ul>
+      <button onclick="goBack()">戻る</button>
+  </section>
+
+  <!-- 編集画面 -->
+  <section id="content" class="container" style="display:none;">
+      <h1>編集画面</h1>
+      <textarea rows="10" cols="50">ここに小説の内容を編集してください...</textarea>
+      <button onclick="goBack()">戻る</button>
+  </section>
+
+  <script>
+      const sections = document.querySelectorAll('.container');
+      
+      // リンクをクリックしたときに画面を切り替える
+      document.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function(event) {
+              event.preventDefault();
+              sections.forEach(section => section.style.display = 'none');
+              document.querySelector(this.getAttribute('href')).style.display = 'block';
+          });
+      });
+
+      // 戻るボタン機能
+      function goBack() {
+          sections.forEach(section => section.style.display = 'none');
+          document.querySelector('#novel_index').style.display = 'block';
+      }
+
+      // 初期表示
+      document.querySelector('#novel_index').style.display = 'block';
+  </script>
+</body>
+</html>
