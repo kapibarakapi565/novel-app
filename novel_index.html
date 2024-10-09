@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+    <meta charset = "UTF-8">
+    <meta name ="viewport" content = "width = device-width, initial-scale = 1.0">
+    <title>小説一覧</title>
+  </head>
+  <body>
+    <header>
+      <h1>小説一覧</h1>
+    </header>
+    <div class ="novel-list" id = "novelList">
+      <!-- ここに小説のタイトルが表示されます -->
+    </div>
+
+    <!-- 新規作成ボタン -->
+    <button onclick="location.href = 'content.html'">新規作成</button>
+
+    <script>
+      // 小説一覧を表示するためのJavaScript
+      function loadNovels(){
+        const novels = JSON.parse(localStorage.getItem('novels')) || [];
+        const novelList = document.getElementById('novelList');
+        novelList.innerHTML = '';
+
+        novels.forEach((novel,index) => {
+          const novelItem = document.createElement('div');
+
+          //小説のタイトルを表示
+          const titleElement = document.createElement('span');
+          titleElement.textContent = `小説 ${index + 1}: ${novel.title}`;
+          novelItem.appendChild(titleElement);
+
+          //削除ボタンを追加
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = '削除';
+          deleteButton.onclick = () =>deleteNovel(index);
+          novelItem.appendChild(deleteButton);
+          novelList.appendChild(novelItem);
+
+          //編集ボタンを追加
+          const editButton = document.createElement('button');
+          editButton.textContent = '編集';
+          editButton.onclick = () =>editNovel(index);
+          novelItem.appendChild(editButton);
+          novelList.appendChild(novelItem);
+        });
+      }
+
+      //小説を削除する関数
+      function deleteNovel(index){
+        const novels = JSON.parse(localStorage.getItem('novels')) || [];
+
+        //指定されたインデックスの小説を削除
+        novels.splice(index,1);
+
+        //更新された小説一覧をローカルストレージに保存
+        localStorage.setItem('novels',JSON.stringify(novels));
+
+        //小説一覧を再描画
+        loadNovels();
+      }
+
+      //編集ボタンを押した時の動作の関数
+      function editNovel(index){
+        //編集する小説のインデックスを保存
+        localStorage.setItem('editIndex',index)
+        //編集ページへ移動
+        window.location.href = 'edit.html';
+      }
+
+      // ページが読み込まれたら小説一覧を表示
+      window.onload = loadNovels;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content="width = device-width, initial-scale =1.0">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      textarea {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+    <title>小説編集</title>
+  </head>
+  <body>
+    <!-- 編集画面 -->
+    <header>
+      <button onclick="goBack()">←</button>
+      <h1>小説を編集</h1>
+    </header>
+    <!-- タイトル入力 -->
+    <input type = "text" id = "novelTitle" placeholder="タイトルを入力してください">
+    <!-- 本文入力 -->
+    <textarea id = "novelInput" placeholder = "ここに小説を入力してください..."></textarea>
+    <button onclick = "saveNovel()">保存</button>
+    <button onclick = "loadNovel()">読み込み</button>
+    <script>
+      //ページが読み込まれたら対象の小説を表示
+      window.onload = function(){
+        const novels = JSON.parse(localStorage.getItem('novels')) || [];
+        const editIndex = localStorage.getItem('editIndex'); //編集対象のインデックスを取得
+
+        if (editIndex !== null) {
+          // 編集対象の小説を取得
+          const novel = novels[editIndex];
+          document.getElementById('novelTitle').value = novel.title; //タイトルをセット
+          document.getElementById('novelInput').value = novel.text; //本文をセット
+        }
+      };
+
+      //編集内容を保存する関数
+      function saveEditNovel() {
+        const novels = JSON.parse(localStorage.getItem('novels')) || [];
+        const editIndex = localStorage.getItem('editIndex');
+
+        //編集したデータを取得
+        const editedTitle = document.getElementById('novelTitle').value;
+        const editedText = document.getElementById('novelInput').value;
+
+        //編集内容を更新
+        novels[editIndex] = { title: editedTitle, text: editedText };
+
+        //更新した小説一覧をローカルストレージに保存
+        localStorage.setItem('novels', JSON.stringify(novels));
+
+        //編集完了後、小説一覧ページに戻る
+        alert('小説が編集されました！');
+        window.location.href = 'novel_index.html';
+      }
+
+      function goBack() {
+          window.location.href = 'novel_index.html';
+        }
+        
+    </script>
+  </body>
+</html>
