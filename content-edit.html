@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      textarea {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+    <body>
+      <!-- 編集画面 -->
+      <header>
+        <button onclick="goBack()">←</button>
+        <h1 id = "pageTitle">小説タイトル</h1>
+      </header>
+      <!-- タイトル入力 -->
+      <input type = "text" id = "novelTitle" placeholder="タイトルを入力してください">
+      <!-- 本文入力 -->
+      <textarea id = "novelInput" placeholder = "ここに小説を入力してください..."></textarea>
+      <button id="saveButton" onclick = "saveNovel()">保存</button>
+      <!-- <button onclick = "loadNovel()">読み込み</button> -->
+
+      <script>
+        let editIndex = localStorage.getItem('editIndex');
+
+        //ページが読み込まれた時の処理
+        window.onload = function(){
+          const novels = JSON.parse(localStorage.getItem('novels')) || [];
+
+          if (editIndex !== null){
+            //編集モードの設定
+            document.getElementById('pageTitle').textContent = '小説を編集';
+            document.getElementById('saveButton').textContent = '編集を保存';
+
+            //編集する小説のデータをセット
+            const novel = novels[editIndex];
+            document.getElementById('novelTitle').value = novel.title;
+            document.getElementById('novelInput').value = novel.text
+          } else {
+            //新規作成モード
+            document.getElementById('pageTitle').textContent = '新しい小説を作成';
+            document.getElementById('saveButton').textContent = '保存';
+          }
+        };
+
+        //小説を保存する関数(新規作成と編集に対応)
+        function saveNovel(){
+          const novelTitle = document.getElementById('novelTitle').value;
+          const novelText = document.getElementById('novelInput').value;
+          // 既存の小説一覧を取得(存在しない場合は空の配列を作る)
+          const novels = JSON.parse(localStorage.getItem('novels')) || [];
+
+          if (!novelTitle || !novelText){
+            alert("タイトルと本文の両方を入力してください。");
+            return;
+          }
+
+          if (editIndex !== null){
+            //編集モードでの保存
+            novels[editIndex] = {title: novelTitle, text:novelText};
+            alert('小説が編集されました！');
+          }else{
+            //新規作成モードでの保存
+            novels.push({ title: novelTitle, text: novelText});
+            alert('小説が保存されました！');
+          }
+          //更新された小説リストをローカルストレージに保存
+          localStorage.setItem('novels', JSON.stringify(novels));
+
+          //小説一覧に戻る
+          window.location.href = 'novel_index.html';
+        }
+
+        function goBack() {
+          window.location.href = 'novel_index.html';
+        }
+        
+      </script>
+   </body>
+</html>

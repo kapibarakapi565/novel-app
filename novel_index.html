@@ -14,7 +14,7 @@
     </div>
 
     <!-- 新規作成ボタン -->
-    <button onclick="location.href = 'content.html'">新規作成</button>
+    <button onclick="createNewNovel()">新規作成</button>
 
     <script>
       // 小説一覧を表示するためのJavaScript
@@ -66,7 +66,15 @@
         //編集する小説のインデックスを保存
         localStorage.setItem('editIndex',index)
         //編集ページへ移動
-        window.location.href = 'edit.html';
+        window.location.href = 'content-edit.html';
+      }
+      
+      //新規作成ボタンを押した時の動作
+      function createNewNovel(){
+        //新規作成時は編集インデックスをクリア
+        localStorage.removeItem('editIndex');
+        //新規作成ページへ移動
+        window.location.href = 'content-edit.html';
       }
 
       // ページが読み込まれたら小説一覧を表示
