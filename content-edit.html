@@ -28,12 +28,13 @@
 
       <script>
         let editIndex = localStorage.getItem('editIndex');
+        let autoSaveInterval;
 
         //ページが読み込まれた時の処理
         window.onload = function(){
           const novels = JSON.parse(localStorage.getItem('novels')) || [];
 
-          if (editIndex !== null){
+          if (editIndex !== null && editIndex !== 'null'){
             //編集モードの設定
             document.getElementById('pageTitle').textContent = '小説を編集';
             document.getElementById('saveButton').textContent = '編集を保存';
@@ -47,6 +48,8 @@
             document.getElementById('pageTitle').textContent = '新しい小説を作成';
             document.getElementById('saveButton').textContent = '保存';
           }
+          //自動保存を開始
+          startAutoSave();
         };
 
         //小説を保存する関数(新規作成と編集に対応)
@@ -68,18 +71,49 @@
           }else{
             //新規作成モードでの保存
             novels.push({ title: novelTitle, text: novelText});
+            editIndex = novels.length -1; //新規作成した小説のインデックスを設定
             alert('小説が保存されました！');
           }
           //更新された小説リストをローカルストレージに保存
           localStorage.setItem('novels', JSON.stringify(novels));
-
-          //小説一覧に戻る
-          window.location.href = 'novel_index.html';
+          localStorage.setItem('editIndex',editIndex);
         }
 
+          //自動保存機能を開始
+          function startAutoSave(){
+            //5秒ごとに自動保存
+            autoSaveInterval = setInterval(function(){
+              saveNovelWithoutAlert();
+            },5000);//5秒間隔
+          }
+
+          //アラートなしで自動保存を行う関数
+          function saveNovelWithoutAlert(){
+            const novelTitle = document.getElementById('novelTitle').value;
+            const novelText = document.getElementById('novelInput').value;
+            const novels = JSON.parse(localStorage.getItem('novels')) || [];
+
+            if(!novelTitle || !novelText){
+              return;//タイトルまたは本文がない場合は保存しない
+            }
+
+            if(editIndex !== null && editIndex !== 'null'){
+              //編集モードでの保存
+              novels[editIndex] = { title: novelTitle, text: novelText };
+            //更新された小説リストをローカルストレージに保存
+            localStorage.setItem('novels',JSON.stringify(novels));
+            }
+          }
+
+          //小説一覧に戻る
         function goBack() {
           window.location.href = 'novel_index.html';
         }
+
+        //ウィンドウが閉じられたり、リロードされるときに自動保存を停止
+        window.onbeforeunload = function(){
+          clearInterval(autoSaveInterval);//自動保存を停止
+        };
         
       </script>
    </body>
