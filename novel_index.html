@@ -31,6 +31,13 @@
           titleElement.textContent = `小説 ${index + 1}: ${novel.title}`;
           novelItem.appendChild(titleElement);
 
+          //作成日時と最終編集日時を表示
+          const dateElement = document.createElement('div');
+          const createdDate = new Date(novel.createdAt).toLocaleString();
+          const updatedDate = novel.updatedAt ? new Date(novel.updatedAt).toLocaleString() : '未編集';
+          dateElement.textContent = `作成日時: ${createdDate} / 最終編集: ${updatedDate}`;
+          novelItem.appendChild(dateElement);
+
           //削除ボタンを追加
           const deleteButton = document.createElement('button');
           deleteButton.textContent = '削除';
@@ -78,7 +85,7 @@
       }
 
       // ページが読み込まれたら小説一覧を表示
-      window.onload = loadNovels;
+      window.onload = loadNovels();
     </script>
   </body>
 </html>
