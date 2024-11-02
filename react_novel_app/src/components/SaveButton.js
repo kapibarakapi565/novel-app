@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // 保存ボタンコンポーネント
-function SaveButton() {
+function SaveButton({ title, text}) {
   const handleSave = () => {
     localStorage.setItem('novelTitle', title);
     localStorage.setItem('novelText',text);
