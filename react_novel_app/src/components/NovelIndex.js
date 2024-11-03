@@ -11,6 +11,7 @@ function NovelIndex() {
     <>
       <Header title="小説一覧" />
       <Link to="/chapter/1">章パート一覧に移動</Link>
+      <NovelList />
       <NewButton />
     </>
   );

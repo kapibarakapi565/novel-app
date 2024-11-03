@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; //rea
 import NovelIndex from './components/NovelIndex';
 import ChapterIndex from './components/ChapterIndex';
 import ContentEdit from './components/ContentEdit';
-import Header from './components/Header.js';
+import NovelList from './components/NovelList';
+
 
 function App() {
 
   return (
     <Router>
-      <Header/>
       <Routes>
         {/* 小説一覧ページ */}
         <Route path='/' element={<NovelIndex/>} />
@@ -19,6 +19,7 @@ function App() {
 
         {/* チャプター編集画面 */}
         <Route path='/edit/:chapterId' element={<ContentEdit/>}/>
+        <Route path='/novel/:listId' element={<NovelList/>}/>
       </Routes>
     </Router>
   );

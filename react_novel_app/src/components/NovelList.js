@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const NovelList = ({ novels }) => {
-  return(
+function NovelList(){
+  const [titles, setTitles] = useState([]);
+
+  useEffect(()=>{
+    const savedTitles = JSON.parse(localStorage.getItem('titles')) || [];
+    setTitles(savedTitles);
+  },[]);
+
+  return (
+    <>
     <ul>
-      {novels.map((novel, index) => (
-        <li key={index}>{novel}</li>
-      ))};
+      {titles.map((title,index) => (
+        <li key={index}>
+          <Link to={`/edit/${index}`}>{title}</Link>
+          </li>
+      ))}
     </ul>
+    </>
   );
-};
+}
 
 export default NovelList;

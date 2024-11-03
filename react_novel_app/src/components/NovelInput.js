@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
 
-function NovelInput() {
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
+function NovelInput({title, text, setTitle, setText}) {
   const handleChange = (ev) => {
     const { name, value } = ev.target;
 
